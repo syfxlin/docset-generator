@@ -1,0 +1,26 @@
+{
+  "name": "docset-generator",
+  "version": "0.1.0",
+  "description": "Dash 文档生成器",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "build:vue": "npm run build -- vue",
+    "build:vuex": "npm run build -- vuex",
+    "build:php": "npm run build -- php"
+  },
+  "dependencies": {
+    "@types/cheerio": "^0.22.18",
+    "@types/node": "^14.0.1",
+    "cheerio": "^1.0.0-rc.3",
+    "sqlite-sync": "^0.3.9",
+    "sync-exec": "^0.6.2"
+  },
+  "keywords": [
+    "Dash",
+    "Node",
+    "Docset",
+    "Documentation"
+  ],
+  "license": "Apache-2.0"
+}
