@@ -26,7 +26,6 @@ const beforeGenerateToc = function ({
   addDashAnchor,
   docset,
 }) {
-  $(".navbar").remove();
   $(".sidebar").remove();
   $(".page").removeClass("page");
 };

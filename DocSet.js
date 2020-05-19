@@ -99,7 +99,7 @@ module.exports = class DocSet {
         this.docset.exclude &&
         this.docset.exclude.find((regex) => new RegExp(regex).test(itemPath))
       ) {
-        return;
+        continue;
       }
       // 包含
       if (
@@ -107,7 +107,7 @@ module.exports = class DocSet {
         this.docset.include.length > 0 &&
         !this.docset.include.find((regex) => new RegExp(regex).test(itemPath))
       ) {
-        return;
+        continue;
       }
       // 目录
       if (fs.statSync(itemPath).isDirectory()) {
@@ -116,7 +116,7 @@ module.exports = class DocSet {
       }
 
       if (![".html", ".htm"].includes(path.extname(itemPath))) {
-        return;
+        continue;
       }
 
       let relativePath = itemPath.split("Documents/")[1];

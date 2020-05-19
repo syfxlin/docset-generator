@@ -31,11 +31,9 @@ const beforeGenerateToc = function ({
   addDashAnchor,
   docset,
 }) {
-  $(".navbar").remove();
   $(".sidebar").remove();
   $(".with-sidebar").removeClass("with-sidebar");
   $("#ad").remove();
-  $("#header").remove();
   $(".ad-pagetop").remove();
 };
 
@@ -149,7 +147,7 @@ module.exports = {
   platformFamily: "VueJS",
   entry: "cn.vuejs.org/index.html",
   domain: "cn.vuejs.org/v2",
-  include: ["api", "guide", "cookbook", "index.html"],
+  include: ["api", "guide", "style-guide", "cookbook", "index.html"],
   exclude: [],
   replace: {},
   beforeParse,
