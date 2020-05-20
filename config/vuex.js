@@ -115,7 +115,7 @@ const afterFilter = function ({ $, relativePath, addDashAnchor, docset }) {
 module.exports = {
   name: "vuex",
   displayName: "Vuex",
-  platformFamily: "VueJS",
+  platformFamily: "Vuex",
   entry: "vuex.vuejs.org/zh/index.html",
   domain: "vuex.vuejs.org/zh",
   include: ["api", "guide", "index.html", "installation.html"],

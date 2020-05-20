@@ -144,7 +144,7 @@ const afterFilter = function ({ $, relativePath, addDashAnchor, docset }) {
 module.exports = {
   name: "vue",
   displayName: "Vue",
-  platformFamily: "VueJS",
+  platformFamily: "Vue",
   entry: "cn.vuejs.org/index.html",
   domain: "cn.vuejs.org/v2",
   include: ["api", "guide", "style-guide", "cookbook", "index.html"],
