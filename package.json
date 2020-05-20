@@ -7,7 +7,8 @@
     "build": "node build.js",
     "build:vue": "npm run build -- vue",
     "build:vuex": "npm run build -- vuex",
-    "build:php": "npm run build -- php"
+    "build:php": "npm run build -- php",
+    "build:vue-router": "npm run build -- vue-router"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.18",

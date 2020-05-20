@@ -1,9 +1,7 @@
 const types = require("../types");
 
 const extractTitle = function ($, element) {
-  let title = $(element).text().trim();
-  element.innerHTML = title;
-  return title.replace(/\([^(]*\)/g, "");
+  return $(element).text().replace("#", "").trim();
 };
 
 const collectH3 = function (element) {
@@ -18,10 +16,6 @@ const collectH3 = function (element) {
   return h3s;
 };
 
-const beforeParse = function ({ path, html }) {
-  return html;
-};
-
 const beforeGenerateToc = function ({
   $,
   relativePath,
@@ -29,9 +23,7 @@ const beforeGenerateToc = function ({
   docset,
 }) {
   $(".sidebar").remove();
-  $(".with-sidebar").removeClass("with-sidebar");
-  $("#ad").remove();
-  $(".ad-pagetop").remove();
+  $(".page").removeClass("page");
 };
 
 const generateToc = function ({
@@ -41,33 +33,11 @@ const generateToc = function ({
   insertToDb,
   docset,
 }) {
+  let isApi = relativePath.indexOf("guide") === -1;
   let h1Title = "";
-  if (relativePath.indexOf("style-guide") !== -1) {
-    $("h2").each((index, element) => {
-      let title = extractTitle($, element);
-      addDashAnchor({
-        element,
-        title: element.attribs.id,
-        type: docset.types.style,
-        num: 2,
-      });
-
-      insertToDb({
-        name: title,
-        type: docset.types.style,
-        path: `${relativePath}#${encodeURIComponent(element.attribs.id)}`,
-      });
-      console.log(`${title}: ${docset.types.style}`);
-    });
-  } else if (
-    relativePath.indexOf("guide") !== -1 ||
-    relativePath.indexOf("cookbook") !== -1
-  ) {
+  if (!isApi) {
     $("h1").each((index, element) => {
       h1Title = extractTitle($, element);
-      if (relativePath.indexOf("cookbook") !== -1 && h1Title === "介绍") {
-        return;
-      }
       insertToDb({
         name: h1Title,
         type: docset.types.guide,
@@ -90,7 +60,7 @@ const generateToc = function ({
       });
       console.log(`${title}: ${type}`);
     });
-  } else if (relativePath.indexOf("api") !== -1) {
+  } else {
     $("h2").each((index, element) => {
       let title = extractTitle($, element);
       let type = docset.types[title];
@@ -115,7 +85,7 @@ const generateToc = function ({
           element: h3Element,
           title: h3Element.attribs.id,
           type: type,
-          num: 1,
+          num: 0,
         });
         insertToDb({
           name: h3Title,
@@ -139,41 +109,30 @@ const afterFilter = function ({ $, relativePath, addDashAnchor, docset }) {
 };
 
 module.exports = {
-  name: "vue",
-  displayName: "Vue",
-  platformFamily: "Vue",
-  entry: "cn.vuejs.org/index.html",
-  domain: "cn.vuejs.org/v2",
-  include: ["api", "guide", "style-guide", "cookbook", "index.html"],
+  name: "vue-router",
+  displayName: "Vue-Router",
+  platformFamily: "VueRouter",
+  entry: "router.vuejs.org/zh/index.html",
+  domain: "router.vuejs.org/zh",
+  include: ["api", "guide", "index.html", "installation.html"],
   exclude: [],
   replace: {},
-  beforeParse,
   beforeGenerateToc,
   generateToc,
   filter,
   beforeFilter,
   afterFilter,
   types: {
-    属性: types.Property,
-    全局配置: types.Property,
-    "全局 API": types.Method,
-    "选项 / 数据": types.Option,
-    "选项 / DOM": types.Option,
-    "选项 / 生命周期钩子": types.Option,
-    "选项 / 资源": types.Option,
-    "选项 / 组合": types.Option,
-    "选项 / 其它": types.Option,
-    "实例 property": types.Property,
-    "实例方法 / 数据": types.Method,
-    "实例方法 / 事件": types.Method,
-    "实例方法 / 生命周期": types.Method,
-    指令: types.Directive,
-    "特殊 attribute": types.Attribute,
-    内置的组件: types.Component,
-    "VNode 接口": types.Component,
-    服务端渲染: types.Component,
+    "<router-link>": types.Element,
+    "<router-link> Props": types.Attribute,
+    "<router-view>": types.Element,
+    "<router-view> Props": types.Attribute,
+    "Router 构建选项": types.Option,
+    "Router 实例属性": types.Property,
+    "Router 实例方法": types.Method,
+    路由对象: types.Object,
+    组件注入: types.Object,
     h2: types.Section,
     guide: types.Guide,
-    style: types.Style,
   },
 };

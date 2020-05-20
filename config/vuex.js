@@ -1,11 +1,7 @@
 const types = require("../types");
 
-const extractTitle = function (element) {
-  return Array.from(element.childNodes)
-    .map((node) => node.data)
-    .join("")
-    .replace("#", "")
-    .trim();
+const extractTitle = function ($, element) {
+  return $(element).text().replace("#", "").trim();
 };
 
 const collectH3 = function (element) {
@@ -41,7 +37,7 @@ const generateToc = function ({
   let h1Title = "";
   if (!isApi) {
     $("h1").each((index, element) => {
-      h1Title = extractTitle(element);
+      h1Title = extractTitle($, element);
       insertToDb({
         name: h1Title,
         type: docset.types.guide,
@@ -49,7 +45,7 @@ const generateToc = function ({
       });
     });
     $("h3").each((index, element) => {
-      let title = extractTitle(element);
+      let title = extractTitle($, element);
       let type = docset.types.h2;
       addDashAnchor({
         element,
@@ -66,7 +62,7 @@ const generateToc = function ({
     });
   } else {
     $("h2").each((index, element) => {
-      let title = extractTitle(element);
+      let title = extractTitle($, element);
       let type = docset.types[title];
       addDashAnchor({
         element,
@@ -84,7 +80,7 @@ const generateToc = function ({
 
       let h3s = collectH3(element);
       h3s.forEach((h3Element) => {
-        let h3Title = extractTitle(h3Element);
+        let h3Title = extractTitle($, h3Element);
         addDashAnchor({
           element: h3Element,
           title: h3Element.attribs.id,
