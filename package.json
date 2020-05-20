@@ -8,7 +8,8 @@
     "build:vue": "npm run build -- vue",
     "build:vuex": "npm run build -- vuex",
     "build:php": "npm run build -- php",
-    "build:vue-router": "npm run build -- vue-router"
+    "build:vue-router": "npm run build -- vue-router",
+    "build:laravel": "npm run build -- laravel"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.18",

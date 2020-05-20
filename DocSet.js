@@ -11,13 +11,14 @@ module.exports = class DocSet {
       ...this.getPaths(options),
       infoPlist: this.getInfoPlist(options),
     };
-    this.timer = null;
   }
 
   build() {
     this.createBaseIndex();
     this.createSqliteIndex();
-    this.readDirSync(this.docset.docPath);
+    for (const docPath of this.docset.docPath) {
+      this.readDirSync(docPath);
+    }
   }
 
   getPaths(options) {
@@ -27,7 +28,14 @@ module.exports = class DocSet {
       `${options.displayName}.docset`
     );
     const resPath = path.join(basePath, `/Contents/Resources`);
-    const docPath = path.join(resPath, `/Documents/${options.domain}`);
+    let docPath;
+    if (typeof options.domain === "string") {
+      docPath = [path.join(resPath, `/Documents/${options.domain}`)];
+    } else {
+      docPath = options.domain.map((item) =>
+        path.join(resPath, `/Documents/${item}`)
+      );
+    }
     return {
       basePath,
       resPath,
@@ -182,6 +190,9 @@ module.exports = class DocSet {
     )}/${num}`;
     let dashAnchor = `<a class="dashAnchor" name="${titleStr}"/>`;
     this.$(element).before(dashAnchor).html();
+    if (this.$(`#title`).length === 0) {
+      this.$(element).attr("id", encodeURIComponent(title));
+    }
   }
 
   writeFile({ path, content }) {
