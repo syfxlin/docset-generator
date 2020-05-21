@@ -2,6 +2,8 @@
 
 > Dash 文档生成器
 
+制作好的文档我会传到 [Release](https://github.com/syfxlin/docset-generator/releases) 如果有刚好需要的可以直接使用。
+
 ## 制作方式
 
 ### 1. 镜像站点

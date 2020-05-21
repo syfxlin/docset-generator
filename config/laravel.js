@@ -135,10 +135,14 @@ module.exports = {
   domain: ["learnku.com/docs/laravel/7.x", "laravel.com/api/7.x"],
   include: [],
   exclude: [],
-  replace: {},
-  beforeGenerateToc,
-  generateToc,
-  filter,
-  beforeFilter,
-  afterFilter,
+  generator: [
+    {
+      pattern: /.*/g,
+      beforeGenerateToc,
+      generateToc,
+      filter,
+      beforeFilter,
+      afterFilter,
+    },
+  ],
 };

@@ -17,6 +17,7 @@ module.exports = class DocSet {
     this.createBaseIndex();
     this.createSqliteIndex();
     for (const docPath of this.docset.docPath) {
+      this.readIndex(docPath);
       this.readDirSync(docPath);
     }
   }
@@ -97,11 +98,31 @@ module.exports = class DocSet {
     );
   }
 
+  readIndex(_path) {
+    if (!this.docset.indexGenerator) {
+      return;
+    }
+    for (const indexGenerator of this.docset.indexGenerator) {
+      const itemPath = path
+        .join(_path, indexGenerator.file)
+        .replace(/\\/g, "/");
+      if (!fs.existsSync(itemPath)) {
+        continue;
+      }
+      const relativePath = itemPath.split("Documents/")[1];
+      this.generatorDocument({
+        itemPath,
+        relativePath,
+        generator: indexGenerator,
+      });
+    }
+  }
+
   readDirSync(_path) {
-    let _this = this;
     let paths = fs.readdirSync(_path);
     for (const item of paths) {
       const itemPath = path.join(_path, item).replace(/\\/g, "/");
+      const relativePath = itemPath.split("Documents/")[1];
       // 排除
       if (
         this.docset.exclude &&
@@ -119,7 +140,7 @@ module.exports = class DocSet {
       }
       // 目录
       if (fs.statSync(itemPath).isDirectory()) {
-        _this.readDirSync(itemPath);
+        this.readDirSync(itemPath);
         continue;
       }
 
@@ -127,46 +148,57 @@ module.exports = class DocSet {
         continue;
       }
 
-      let relativePath = itemPath.split("Documents/")[1];
-
-      let html = fs.readFileSync(itemPath, {
-        encoding: "utf-8",
-      });
-      if (_this.docset.beforeParse) {
-        html = _this.docset.beforeParse({ path: itemPath, html: html });
+      for (const generator of this.docset.generator) {
+        if (!new RegExp(generator.pattern).test(relativePath)) {
+          continue;
+        }
+        this.generatorDocument({
+          itemPath,
+          relativePath,
+          generator,
+        });
       }
-      let $ = cheerio.load(html);
-      let params = {
-        $,
-        relativePath,
-        addDashAnchor: _this.addDashAnchor.bind({ $ }),
-        docset: _this.docset,
-      };
-      if (_this.docset.beforeGenerateToc) {
-        _this.docset.beforeGenerateToc(params);
-      }
-      _this.docset.generateToc({
-        insertToDb: _this.insertToDb,
-        ...params,
-      });
-      if (_this.docset.beforeFilter) {
-        _this.docset.beforeFilter(params);
-      }
-      if (_this.docset.filter) {
-        _this.docset.filter(params);
-      }
-      if (_this.docset.afterFilter) {
-        _this.docset.afterFilter(params);
-      }
-      html = $.html();
-      if (_this.docset.beforeWrite) {
-        html = _this.docset.beforeWrite({ path: itemPath, html: html });
-      }
-      _this.writeFile({
-        path: itemPath,
-        content: html,
-      });
     }
+  }
+
+  generatorDocument({ itemPath, generator, relativePath }) {
+    let html = fs.readFileSync(itemPath, {
+      encoding: "utf-8",
+    });
+    if (generator.beforeParse) {
+      html = generator.beforeParse({ path: itemPath, html: html });
+    }
+    let $ = cheerio.load(html);
+    let params = {
+      $,
+      relativePath,
+      addDashAnchor: this.addDashAnchor.bind({ $ }),
+      docset: this.docset,
+    };
+    if (generator.beforeGenerateToc) {
+      generator.beforeGenerateToc(params);
+    }
+    generator.generateToc({
+      insertToDb: this.insertToDb,
+      ...params,
+    });
+    if (generator.beforeFilter) {
+      generator.beforeFilter(params);
+    }
+    if (generator.filter) {
+      generator.filter(params);
+    }
+    if (generator.afterFilter) {
+      generator.afterFilter(params);
+    }
+    html = $.html();
+    if (generator.beforeWrite) {
+      html = generator.beforeWrite({ path: itemPath, html: html });
+    }
+    this.writeFile({
+      path: itemPath,
+      content: html,
+    });
   }
 
   insertToDb({ name, type, path }) {

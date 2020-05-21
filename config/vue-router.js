@@ -116,12 +116,16 @@ module.exports = {
   domain: "router.vuejs.org/zh",
   include: ["api", "guide", "index.html", "installation.html"],
   exclude: [],
-  replace: {},
-  beforeGenerateToc,
-  generateToc,
-  filter,
-  beforeFilter,
-  afterFilter,
+  generator: [
+    {
+      pattern: /.*/g,
+      beforeGenerateToc,
+      generateToc,
+      filter,
+      beforeFilter,
+      afterFilter,
+    },
+  ],
   types: {
     "<router-link>": types.Element,
     "<router-link> Props": types.Attribute,

@@ -116,12 +116,16 @@ module.exports = {
   domain: "vuex.vuejs.org/zh",
   include: ["api", "guide", "index.html", "installation.html"],
   exclude: [],
-  replace: {},
-  beforeGenerateToc,
-  generateToc,
-  filter,
-  beforeFilter,
-  afterFilter,
+  generator: [
+    {
+      pattern: /.*/g,
+      beforeGenerateToc,
+      generateToc,
+      filter,
+      beforeFilter,
+      afterFilter,
+    },
+  ],
   types: {
     "Vuex.Store": types.Constructor,
     "Vuex.Store 构造器选项": types.Parameter,

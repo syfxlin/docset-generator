@@ -151,9 +151,13 @@ module.exports = {
   domain: "",
   include: [],
   exclude: [],
-  replace: {},
-  generateToc,
-  filter,
-  beforeFilter,
-  afterFilter,
+  generator: [
+    {
+      pattern: /.*/g,
+      generateToc,
+      filter,
+      beforeFilter,
+      afterFilter,
+    },
+  ],
 };
