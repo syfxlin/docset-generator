@@ -12,7 +12,8 @@
     "build:laravel": "npm run build -- laravel",
     "build:html": "npm run build -- html",
     "build:css": "npm run build -- css",
-    "build:http": "npm run build -- http"
+    "build:http": "npm run build -- http",
+    "build:java": "npm run build -- java"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.18",
