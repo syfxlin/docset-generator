@@ -14,7 +14,8 @@
     "build:css": "npm run build -- css",
     "build:http": "npm run build -- http",
     "build:java": "npm run build -- java",
-    "build:javascript": "npm run build -- javascript"
+    "build:javascript": "npm run build -- javascript",
+    "build:composer": "npm run build -- composer"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.18",
