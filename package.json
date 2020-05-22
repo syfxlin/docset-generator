@@ -15,12 +15,17 @@
     "build:http": "npm run build -- http",
     "build:java": "npm run build -- java",
     "build:javascript": "npm run build -- javascript",
-    "build:composer": "npm run build -- composer"
+    "build:composer": "npm run build -- composer",
+    "build:react": "npm run build -- react",
+    "build:redux": "npm run build -- redux",
+    "build:phpunit": "npm run build -- phpunit"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.18",
     "@types/node": "^14.0.1",
+    "@types/puppeteer": "^3.0.0",
     "cheerio": "^1.0.0-rc.3",
+    "puppeteer": "^3.1.0",
     "sqlite-sync": "^0.3.9",
     "sync-exec": "^0.6.2"
   },
