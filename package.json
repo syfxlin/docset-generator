@@ -18,7 +18,8 @@
     "build:composer": "npm run build -- composer",
     "build:react": "npm run build -- react",
     "build:redux": "npm run build -- redux",
-    "build:phpunit": "npm run build -- phpunit"
+    "build:phpunit": "npm run build -- phpunit",
+    "build:redis": "npm run build -- redis"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.18",
